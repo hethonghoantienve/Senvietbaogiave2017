@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
   <style>
     :root {
       --primary-navy: #071e3d;
@@ -23,7 +22,6 @@
       --danger: #dc2626;
       --success: #16a34a;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background-color: #eceff4; color: var(--text-main); padding: 20px 14px; min-height: 100vh; }
     .container { max-width: 1460px; margin: 0 auto; display: grid; grid-template-columns: 490px 1fr; gap: 24px; }
@@ -201,10 +199,9 @@
       transition: all 0.35s ease;
     }
     .brand-area { display: flex; align-items: center; gap: 14px; }
-    
     .airline-text-badge {
       background: #ffffff;
-      color: #b91c1c;
+      color: #00467f;
       border-radius: 10px;
       padding: 6px 14px;
       display: flex;
@@ -218,7 +215,6 @@
       letter-spacing: 0.5px;
       transition: all 0.35s ease;
     }
-    
     .brand-text h1 { font-family: 'Playfair Display', serif; font-size: 1.35rem; letter-spacing: 0.5px; }
     .brand-text p { font-size: 0.82rem; color: #cbd5e1; margin-top: 2px; }
     .trip-badge {
@@ -235,7 +231,6 @@
 
     /* BODY BÁO GIÁ */
     .quote-body { padding: 22px 28px; }
-
     .segment-card {
       background: #f8fafc;
       border: 1.5px solid #e2e8f0;
@@ -300,6 +295,7 @@
     }
     .node-title { font-size: 1.2rem; font-weight: 800; color: var(--primary-navy); }
     .node-sub { font-size: 0.8rem; color: #475569; font-weight: 600; margin-top: 2px; }
+    .node-sub.term-highlight { color: #dc2626; font-weight: 800; }
     
     .route-center { 
       text-align: center; 
@@ -316,7 +312,7 @@
       height: 2px; 
       background: #cbd5e1; 
       position: relative; 
-      margin-bottom: 4px;
+      margin-bottom: 4px; 
     }
     .flight-line i {
       position: absolute;
@@ -465,12 +461,11 @@
 <body>
 
 <div class="container">
-
   <!-- CỘT 1: ĐIỀU KHIỂN & BÓC TÁCH -->
   <div class="control-panel">
     <div class="panel-header">
       <h2><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--gold-accent);"></i> AI Quét Vé Tự Động</h2>
-      <span style="font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 3px 8px; border-radius: 6px; font-weight: 800;">GEMINI FLASH</span>
+      <span style="font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 3px 8px; border-radius: 6px; font-weight: 800;">GEMINI 3.8 FLASH</span>
     </div>
 
     <!-- KHỐI API KEY -->
@@ -482,18 +477,17 @@
       <input type="password" id="geminiApiKey" placeholder="Dán mã API Key bắt đầu bằng AIzaSy..." oninput="saveApiKey(this.value)">
     </div>
 
-    <!-- KHU VỰC DÁN ẢNH / BẤM CHỌN ẢNH -->
+    <!-- KHU VỰC DÁN ẢNH -->
     <div class="paste-zone" id="pasteZone">
       <i class="fa-solid fa-paste"></i>
       <p id="pasteStatusText">BẤM VÀO ĐÂY ĐỂ CHỌN ẢNH HOẶC NHẤN CTRL + V</p>
-      <span>Tự động nhận diện hãng, chặng bay, giờ bay và tính bảng giá</span>
-      
+      <span>Tự động nhận diện chính xác hãng, nhà ga T1/T2/T3, hành lý và giờ bay</span>
       <input type="file" id="fileInput" accept="image/*">
-      
+
       <!-- LOADING AI -->
       <div class="ai-loading-box" id="aiLoadingBox">
         <div style="font-size: 0.78rem; font-weight: 700; color: #1e40af;" id="aiStatusMsg">
-          <i class="fa-solid fa-bolt fa-bounce" style="color: #f59e0b;"></i> Đang phân tích siêu tốc và đồng bộ vé máy bay...
+          <i class="fa-solid fa-bolt fa-bounce" style="color: #f59e0b;"></i> Đang đọc siêu nét từng chi tiết nhà ga và đồng bộ vé...
         </div>
         <div class="progress-bar-bg">
           <div class="progress-bar-fill"></div>
@@ -505,11 +499,11 @@
     <div class="form-row">
       <div class="form-group">
         <label>Tên Hãng Hàng Không</label>
-        <input type="text" id="airlineName" value="VietJet Air" oninput="onAirlineChange()">
+        <input type="text" id="airlineName" value="Vietnam Airlines" oninput="onAirlineChange()">
       </div>
       <div class="form-group">
         <label>Chữ Viết Tắt (Huy Hiệu)</label>
-        <input type="text" id="airlineBadgeText" value="VJ" placeholder="VJ, VN, QH, VU, CX, BR..." oninput="onBadgeTextChange()">
+        <input type="text" id="airlineBadgeText" value="VN" placeholder="VN, VJ, QH, VU, CX, BR..." oninput="onBadgeTextChange()">
       </div>
     </div>
 
@@ -522,29 +516,27 @@
       </select>
     </div>
 
-    <!-- KHỐI ĐIỀN TAY HÀNH LÝ XÁCH TAY VÀ KÝ GỬI -->
+    <!-- KHỐI ĐIỀN TAY HÀNH LÝ -->
     <div class="section-title">
       <span><i class="fa-solid fa-suitcase-rolling"></i> Điền Tay Hành Lý</span>
       <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">Tự do nhập kg</span>
     </div>
-
     <div class="form-row">
       <div class="form-group">
         <label><i class="fa-solid fa-bag-shopping" style="color: #0284c7;"></i> Hành Lý Xách Tay</label>
-        <input type="text" id="carryOnBaggage" value="7kg xách tay" placeholder="VD: 7kg, 10kg, 12kg xách tay..." oninput="onBaggageManualChange()">
+        <input type="text" id="carryOnBaggage" value="10kg xách tay" placeholder="VD: 7kg, 10kg, 12kg..." oninput="onBaggageManualChange()">
       </div>
       <div class="form-group">
         <label><i class="fa-solid fa-suitcase" style="color: #16a34a;"></i> Hành Lý Ký Gửi</label>
-        <input type="text" id="checkedBaggage" value="20kg ký gửi" placeholder="VD: 20kg, 23kg, Không có ký gửi..." oninput="onBaggageManualChange()">
+        <input type="text" id="checkedBaggage" value="23kg ký gửi" placeholder="VD: 20kg, 23kg, Không có ký gửi..." oninput="onBaggageManualChange()">
       </div>
     </div>
 
-    <!-- KHỐI ĐỔI VÉ THEO TỪNG CHẶNG -->
+    <!-- KHỐI ĐỔI VÉ -->
     <div class="section-title">
       <span><i class="fa-solid fa-arrow-rotate-right"></i> Đổi Vé Linh Hoạt Theo Chặng</span>
       <span style="font-size: 0.72rem; color: #2563eb; font-weight: 700;">Chính sách linh hoạt</span>
     </div>
-
     <div class="form-row">
       <div class="form-group">
         <label>Chọn Áp Dụng Đổi Vé</label>
@@ -567,7 +559,7 @@
       <span><i class="fa-solid fa-users"></i> Số Người & Giá Vé</span>
       <span style="font-size: 0.72rem; color: #dc2626; font-weight: 700;" id="panelDiscountLabel">Đặc quyền trợ giá 35%</span>
     </div>
-    
+
     <!-- 1. NGƯỜI LỚN -->
     <div class="pax-card-input">
       <div class="pax-header-lbl">
@@ -581,11 +573,11 @@
         </div>
         <div>
           <label style="font-size:0.7rem; font-weight:700; color:#64748b;">Vé gốc (đ)</label>
-          <input type="number" id="adultFare" value="5800000" oninput="onAdultFareChange()">
+          <input type="number" id="adultFare" value="12500000" oninput="onAdultFareChange()">
         </div>
         <div>
           <label style="font-size:0.7rem; font-weight:700; color:#64748b;">Thuế phí (đ)</label>
-          <input type="number" id="adultTax" value="2270000" oninput="onAdultTaxChange()">
+          <input type="number" id="adultTax" value="3850000" oninput="onAdultTaxChange()">
         </div>
       </div>
     </div>
@@ -603,11 +595,11 @@
         </div>
         <div>
           <label style="font-size:0.7rem; font-weight:700; color:#64748b;">Vé gốc (đ) [70%]</label>
-          <input type="number" id="childFare" value="4060000" oninput="renderQuote()">
+          <input type="number" id="childFare" value="8750000" oninput="renderQuote()">
         </div>
         <div>
           <label style="font-size:0.7rem; font-weight:700; color:#64748b;">Thuế phí (đ)</label>
-          <input type="number" id="childTax" value="2270000" oninput="renderQuote()">
+          <input type="number" id="childTax" value="3850000" oninput="renderQuote()">
         </div>
       </div>
     </div>
@@ -638,7 +630,7 @@
       </div>
       <div class="form-group">
         <label>Tổng Bill Gốc Ban Đầu</label>
-        <input type="text" id="totalRawPreview" value="8.070.000 đ" readonly style="background: #f1f5f9; font-weight: 700;">
+        <input type="text" id="totalRawPreview" value="16.350.000 đ" readonly style="background: #f1f5f9; font-weight: 700;">
       </div>
     </div>
 
@@ -663,14 +655,14 @@
   <div class="preview-container">
     <div class="preview-wrapper">
       <div class="quote-card" id="quoteCard">
-        
+
         <!-- HEADER BÁO GIÁ ĐỔI MÀU THEO HÃNG -->
         <div class="quote-header" id="viewQuoteHeader">
           <div class="brand-area">
-            <div class="airline-text-badge" id="viewAirlineBadge">VJ</div>
+            <div class="airline-text-badge" id="viewAirlineBadge">VN</div>
             <div class="brand-text">
               <h1>BÁO GIÁ VÉ MÁY BAY</h1>
-              <p><span id="viewAirline">VietJet Air</span> • <span id="viewTripDesc">Khứ hồi Busan - Hà Nội</span></p>
+              <p><span id="viewAirline">Vietnam Airlines</span> • <span id="viewTripDesc">Khứ hồi Sydney - Hải Phòng</span></p>
             </div>
           </div>
           <div class="trip-badge" id="viewTripBadge">KHỨ HỒI</div>
@@ -689,7 +681,7 @@
               <ul id="viewIncludedList">
                 <li id="viewBaggageIncluded">
                   <i class="fa-solid fa-suitcase-rolling" style="color: #059669;"></i>
-                  <span>Hành lý chặng bay: <strong id="viewBaggageText" style="color: #0f172a; margin-left: 2px;">7kg xách tay + 20kg ký gửi</strong></span>
+                  <span>Hành lý chặng bay: <strong id="viewBaggageText" style="color: #0f172a; margin-left: 2px;">10kg xách tay + 23kg ký gửi</strong></span>
                 </li>
                 <li id="viewChangeTicketLi">
                   <i class="fa-solid fa-shield-halved" style="color: #2563eb;"></i>
@@ -718,16 +710,16 @@
                   <i class="fa-solid fa-crown"></i> ĐẶC QUYỀN TRỢ GIÁ 35%
                 </div>
               </div>
-              
+
               <!-- DÒNG NGƯỜI LỚN -->
               <div id="viewAdultBlock">
                 <div class="p-row">
                   <span id="viewAdultTitle">Vé người lớn (x1):</span>
-                  <span id="viewAdultTotal" style="font-weight: 700;">8.070.000 đ</span>
+                  <span id="viewAdultTotal" style="font-weight: 700;">16.350.000 đ</span>
                 </div>
                 <div class="p-sub-item">
-                  <span>&bull; Vé gốc: <span id="viewAdultBase">5.800.000 đ</span></span>
-                  <span>Thuế phí: <span id="viewAdultTax">2.270.000 đ</span></span>
+                  <span>&bull; Vé gốc: <span id="viewAdultBase">12.500.000 đ</span></span>
+                  <span>Thuế phí: <span id="viewAdultTax">3.850.000 đ</span></span>
                 </div>
               </div>
 
@@ -735,11 +727,11 @@
               <div id="viewChildBlock" style="display: none; margin-top: 4px;">
                 <div class="p-row">
                   <span id="viewChildTitle">Vé trẻ em (2-12t) (x1):</span>
-                  <span id="viewChildTotal" style="font-weight: 700;">6.330.000 đ</span>
+                  <span id="viewChildTotal" style="font-weight: 700;">12.600.000 đ</span>
                 </div>
                 <div class="p-sub-item">
-                  <span>&bull; Vé gốc (70%): <span id="viewChildBase">4.060.000 đ</span></span>
-                  <span>Thuế phí: <span id="viewChildTax">2.270.000 đ</span></span>
+                  <span>&bull; Vé gốc (70%): <span id="viewChildBase">8.750.000 đ</span></span>
+                  <span>Thuế phí: <span id="viewChildTax">3.850.000 đ</span></span>
                 </div>
               </div>
 
@@ -756,23 +748,21 @@
               </div>
 
               <div class="p-div"></div>
-
               <div class="p-row" style="color: #475569; font-size: 0.82rem;">
                 <span>Tổng giá vé ban đầu:</span>
-                <span id="viewSumInitial" style="font-weight: 700;">8.070.000 đ</span>
+                <span id="viewSumInitial" style="font-weight: 700;">16.350.000 đ</span>
               </div>
               <div class="p-row disc" id="viewDiscountRow">
                 <span id="viewDiscountLabel">Đặc quyền trợ giá (-35%):</span>
-                <span id="viewDiscountAmount">- 2.824.500 đ</span>
+                <span id="viewDiscountAmount">- 5.722.500 đ</span>
               </div>
 
               <div class="p-div"></div>
-              
               <div class="p-total-box">
                 <span class="p-tot-lbl">TỔNG CỘNG:</span>
                 <div style="display: flex; align-items: baseline; justify-content: flex-end;">
-                  <span class="old-price" id="viewOldTotal">8.070.000 đ</span>
-                  <span class="p-tot-val" id="viewFinalTotal">5.245.500 đ</span>
+                  <span class="old-price" id="viewOldTotal">16.350.000 đ</span>
+                  <span class="p-tot-val" id="viewFinalTotal">10.627.500 đ</span>
                 </div>
               </div>
               <div style="text-align: right; font-size: 0.72rem; color: #92400e; margin-top: 2px;">Đã bao gồm toàn bộ thuế phí & hành lý</div>
@@ -782,28 +772,24 @@
 
         <!-- WATERMARK -->
         <div class="card-watermark">
-          <div>* Báo giá có hiệu lực trong thời gian giữ chỗ của Hãng.</div>
+          <div>Báo giá có hiệu lực trong thời gian giữ chỗ của Hãng.</div>
           <div style="font-weight: 700; color: #475569;">TỔNG ĐẠI LÝ VÉ MÁY BAY SEN VIỆT GROUP</div>
         </div>
-
       </div>
     </div>
   </div>
-
 </div>
 
 <script>
   const AIRLINE_THEMES = {
     "vietjet": { code: "VJ", headerBg: "linear-gradient(135deg, #b91c1c 0%, #dc2626 100%)", badgeColor: "#dc2626" },
     "vietnam airlines": { code: "VN", headerBg: "linear-gradient(135deg, #072a4d 0%, #005a9c 100%)", badgeColor: "#00467f" },
+    "pacific": { code: "BL", headerBg: "linear-gradient(135deg, #ea580c 0%, #f97316 100%)", badgeColor: "#ea580c" },
     "bamboo": { code: "QH", headerBg: "linear-gradient(135deg, #065f46 0%, #059669 100%)", badgeColor: "#047857" },
     "vietravel": { code: "VU", headerBg: "linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%)", badgeColor: "#d97706" },
-    "sun phu quoc": { code: "9G", headerBg: "linear-gradient(135deg, #7c2d12 0%, #c2410c 100%)", badgeColor: "#c2410c" },
     "eva": { code: "BR", headerBg: "linear-gradient(135deg, #064e3b 0%, #047857 100%)", badgeColor: "#047857" },
     "cathay": { code: "CX", headerBg: "linear-gradient(135deg, #134e4a 0%, #0f766e 100%)", badgeColor: "#0f766e" },
-    "qantas": { code: "QF", headerBg: "linear-gradient(135deg, #991b1b 0%, #dc2626 100%)", badgeColor: "#dc2626" },
-    "singapore": { code: "SQ", headerBg: "linear-gradient(135deg, #1e3a8a 0%, #d97706 100%)", badgeColor: "#1e3a8a" },
-    "korean": { code: "KE", headerBg: "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)", badgeColor: "#0284c7" }
+    "qantas": { code: "QF", headerBg: "linear-gradient(135deg, #991b1b 0%, #dc2626 100%)", badgeColor: "#dc2626" }
   };
 
   function getThemeByAirline(airlineName, fallbackCode) {
@@ -812,48 +798,85 @@
       if (name.includes(key)) return AIRLINE_THEMES[key];
     }
     return {
-      code: (fallbackCode || "BAY").toUpperCase(),
-      headerBg: "linear-gradient(135deg, #071e3d 0%, #153e75 100%)",
-      badgeColor: "#071e3d"
+      code: (fallbackCode || "VN").toUpperCase(),
+      headerBg: "linear-gradient(135deg, #072a4d 0%, #005a9c 100%)",
+      badgeColor: "#00467f"
     };
   }
 
   let ticketData = {
-    airline: "VietJet Air",
-    airlineCode: "VJ",
+    airline: "Vietnam Airlines",
+    airlineCode: "VN",
     tripType: "roundtrip",
-    tripDesc: "Khứ hồi Busan - Hà Nội",
-    carryOn: "7kg xách tay",
-    checked: "20kg ký gửi",
+    tripDesc: "Khứ hồi Sydney - Hải Phòng",
+    carryOn: "10kg xách tay",
+    checked: "23kg ký gửi",
     changeTicketMode: "all",
     changeTicketNote: "(Chỉ thu chênh lệch giá vé nếu có)",
     legs: [
       {
         badge: "CHIỀU ĐI",
-        airlineName: "VietJet Air",
-        airlineCode: "VJ",
-        fromCity: "Busan (PUS)",
-        fromTerm: "",
-        toCity: "Hà Nội (HAN)",
+        airlineName: "Vietnam Airlines",
+        airlineCode: "VN",
+        fromCity: "Sydney (SYD)",
+        fromTerm: "T1",
+        toCity: "Hồ Chí Minh (SGN)",
+        toTerm: "T2",
+        date: "Thứ Hai, 05/04/2027",
+        time: "10:15 - 16:15",
+        flightNo: "VN772",
+        aircraft: "AIRBUS A350-900",
+        duration: "9 giờ 0 phút"
+      },
+      {
+        isTransitBar: true,
+        transitText: "Nối chuyến 4 giờ 20 phút tại Sân bay quốc tế Tân Sơn Nhất, Việt Nam - Thay đổi nhà ga"
+      },
+      {
+        badge: "CHIỀU ĐI",
+        airlineName: "Vietnam Airlines",
+        airlineCode: "VN",
+        fromCity: "Hồ Chí Minh (SGN)",
+        fromTerm: "T3",
+        toCity: "Hải Phòng (HPH)",
         toTerm: "",
-        date: "T.Ba 02/02/2027",
-        time: "14:30 - 17:20",
-        flightNo: "VJ957",
-        aircraft: "Airbus A321",
-        duration: "4 giờ 50 phút"
+        date: "Thứ Hai, 05/04/2027",
+        time: "20:35 - 22:40",
+        flightNo: "VN1188",
+        aircraft: "AIRBUS A321",
+        duration: "2 giờ 5 phút"
       },
       {
         badge: "CHIỀU VỀ",
-        airlineName: "VietJet Air",
-        airlineCode: "VJ",
-        fromCity: "Hà Nội (HAN)",
-        toCity: "Busan (PUS)",
-        toTerm: "",
-        date: "T.Ba 16/02/2027",
-        time: "07:30 - 13:30",
-        flightNo: "VJ956",
-        aircraft: "Airbus A321",
-        duration: "4 giờ 00 phút"
+        airlineName: "Pacific Airlines",
+        airlineCode: "BL",
+        fromCity: "Hải Phòng (HPH)",
+        fromTerm: "",
+        toCity: "Hồ Chí Minh (SGN)",
+        toTerm: "T3",
+        date: "Thứ Hai, 14/06/2027",
+        time: "16:10 - 18:15",
+        flightNo: "VN6441",
+        aircraft: "AIRBUS A321",
+        duration: "2 giờ 5 phút"
+      },
+      {
+        isTransitBar: true,
+        transitText: "Nối chuyến 2 giờ 30 phút tại Sân bay quốc tế Tân Sơn Nhất, Việt Nam - Thay đổi nhà ga"
+      },
+      {
+        badge: "CHIỀU VỀ",
+        airlineName: "Vietnam Airlines",
+        airlineCode: "VN",
+        fromCity: "Hồ Chí Minh (SGN)",
+        fromTerm: "T2",
+        toCity: "Sydney (SYD)",
+        toTerm: "T1",
+        date: "Thứ Hai, 14/06/2027",
+        time: "20:45 - 08:15 (+1 ngày)",
+        flightNo: "VN773",
+        aircraft: "AIRBUS A350-900",
+        duration: "8 giờ 30 phút"
       }
     ]
   };
@@ -864,19 +887,14 @@
 
   window.addEventListener('DOMContentLoaded', () => {
     const savedKey = localStorage.getItem('my_gemini_api_key') || localStorage.getItem('my_universal_ai_key');
-    if (savedKey) {
-      document.getElementById('geminiApiKey').value = savedKey;
-    }
+    if (savedKey) document.getElementById('geminiApiKey').value = savedKey;
     syncInfantTaxByTripType();
     renderQuote();
 
     const pasteZoneElem = document.getElementById('pasteZone');
     const fileInputElem = document.getElementById('fileInput');
 
-    pasteZoneElem.addEventListener('click', () => {
-      fileInputElem.click();
-    });
-
+    pasteZoneElem.addEventListener('click', () => fileInputElem.click());
     fileInputElem.addEventListener('change', (e) => {
       if (e.target.files && e.target.files.length > 0) {
         processImageWithAI(e.target.files[0]);
@@ -901,8 +919,7 @@
     for (let index in items) {
       const item = items[index];
       if (item.kind === 'file' && item.type.startsWith('image/')) {
-        const file = item.getAsFile();
-        processImageWithAI(file);
+        processImageWithAI(item.getAsFile());
         break;
       }
     }
@@ -944,20 +961,11 @@
   function getChangeTicketFullString() {
     const mode = document.getElementById('changeTicketMode').value;
     const note = document.getElementById('changeTicketNote').value.trim();
-    let text = '';
-
-    if (mode === 'all') {
-      text = `Miễn phí đổi vé tất cả các chặng ${note}`;
-    } else if (mode === 'outbound') {
-      text = `Miễn phí đổi vé Chiều Đi ${note}`;
-    } else if (mode === 'inbound') {
-      text = `Miễn phí đổi vé Chiều Về ${note}`;
-    } else if (mode === 'custom') {
-      text = note || 'Hỗ trợ đổi vé theo yêu cầu';
-    } else {
-      text = note || 'Áp dụng theo quy chế hạng vé tiêu chuẩn';
-    }
-    return text.trim();
+    if (mode === 'all') return `Miễn phí đổi vé tất cả các chặng ${note}`.trim();
+    if (mode === 'outbound') return `Miễn phí đổi vé Chiều Đi ${note}`.trim();
+    if (mode === 'inbound') return `Miễn phí đổi vé Chiều Về ${note}`.trim();
+    if (mode === 'custom') return note || 'Hỗ trợ đổi vé theo yêu cầu';
+    return note || 'Áp dụng theo quy chế hạng vé tiêu chuẩn';
   }
 
   function onAdultFareChange() {
@@ -974,12 +982,7 @@
 
   function syncInfantTaxByTripType() {
     const type = document.getElementById('tripType').value;
-    const infantTaxInput = document.getElementById('infantTax');
-    if (type === 'roundtrip' || type === 'transit') {
-      infantTaxInput.value = 400000;
-    } else {
-      infantTaxInput.value = 200000;
-    }
+    document.getElementById('infantTax').value = (type === 'roundtrip' || type === 'transit') ? 400000 : 200000;
   }
 
   function onTripTypeChange(val) {
@@ -1006,7 +1009,6 @@
     const infantAllTotal = infantCount * infantTax;
 
     const discountPercent = parseFloat(document.getElementById('discountPercent').value) || 0;
-
     const initialTotal = adultAllTotal + childAllTotal + infantAllTotal;
     const discountAmount = initialTotal * (discountPercent / 100);
     const finalTotal = Math.max(0, initialTotal - discountAmount);
@@ -1022,23 +1024,20 @@
       ticketData.tripType === 'oneway' ? 'MỘT CHIỀU' : 
       ticketData.tripType === 'transit' ? 'NỐI CHUYẾN' : 'KHỨ HỒI';
 
-    const carryOn = ticketData.carryOn || "7kg xách tay";
-    const checked = ticketData.checked || "Không có ký gửi";
+    const carryOn = ticketData.carryOn || "10kg xách tay";
+    const checked = ticketData.checked || "23kg ký gửi";
     document.getElementById('carryOnBaggage').value = carryOn;
     document.getElementById('checkedBaggage').value = checked;
 
     const fullBaggageStr = `${carryOn} + ${checked}`;
     document.getElementById('viewBaggageText').innerText = fullBaggageStr;
+    document.getElementById('viewChangeTicketText').innerText = getChangeTicketFullString();
 
-    const changeTicketFullStr = getChangeTicketFullString();
-    document.getElementById('viewChangeTicketText').innerText = changeTicketFullStr;
-
-    const badgeText = (ticketData.airlineCode || "VJ").toUpperCase().trim();
+    const badgeText = (ticketData.airlineCode || "VN").toUpperCase().trim();
     const theme = getThemeByAirline(ticketData.airline, badgeText);
 
     const header = document.getElementById('viewQuoteHeader');
     const badgeElem = document.getElementById('viewAirlineBadge');
-    
     header.style.background = theme.headerBg;
     badgeElem.innerText = badgeText;
     badgeElem.style.color = theme.badgeColor;
@@ -1072,7 +1071,6 @@
     document.getElementById('totalRawPreview').value = formatVND(initialTotal);
     document.getElementById('viewSumInitial').innerText = formatVND(initialTotal);
     document.getElementById('viewOldTotal').innerText = formatVND(initialTotal);
-    
     document.getElementById('viewDiscountLabel').innerText = `Đặc quyền trợ giá (-${discountPercent}%):`;
     document.getElementById('viewDiscountAmount').innerText = `- ${formatVND(discountAmount)}`;
     document.getElementById('viewPromoTag').innerHTML = `<i class="fa-solid fa-crown"></i> ĐẶC QUYỀN TRỢ GIÁ ${discountPercent}%`;
@@ -1081,7 +1079,14 @@
     const container = document.getElementById('segmentsContainer');
     container.innerHTML = '';
 
-    ticketData.legs.forEach(leg => {
+    const formatTermClean = (term) => {
+      if (!term) return '';
+      let t = term.trim();
+      const match = t.match(/nhà ga\s*(\d+)/i);
+      return match ? `T${match[1]}` : t;
+    };
+
+    (ticketData.legs || []).forEach(leg => {
       if (leg.isTransitBar) {
         const tDiv = document.createElement('div');
         tDiv.className = 'transit-divider';
@@ -1091,8 +1096,10 @@
       }
 
       const legAirline = leg.airlineName || ticketData.airline;
-      const legCode = (leg.airlineCode || (leg.flightNo ? leg.flightNo.replace(/[^A-Za-z]/g, '').slice(0, 2) : ticketData.airlineCode) || "").toUpperCase();
+      const legCode = (leg.airlineCode || "").toUpperCase();
       const isDifferentAirline = legAirline.toLowerCase() !== ticketData.airline.toLowerCase();
+      const fromTermClean = formatTermClean(leg.fromTerm);
+      const toTermClean = formatTermClean(leg.toTerm);
 
       const card = document.createElement('div');
       card.className = 'segment-card';
@@ -1100,14 +1107,14 @@
         <div class="segment-badge-row">
           <div class="segment-badge-group">
             <div class="segment-badge"><i class="fa-solid fa-plane"></i> ${leg.badge || 'CHẶNG BAY'}</div>
-            ${legAirline ? `<div class="segment-airline-badge" style="${isDifferentAirline ? 'background:#fef2f2; border-color:#fca5a5; color:#b91c1c;' : ''}"><i class="fa-solid fa-paper-plane"></i> ${legAirline} (${legCode})</div>` : ''}
+            ${legAirline ? `<div class="segment-airline-badge" style="${isDifferentAirline ? 'background:#fef2f2; border-color:#fca5a5; color:#b91c1c;' : ''}"><i class="fa-solid fa-paper-plane"></i> ${legAirline} ${legCode ? `(${legCode})` : ''}</div>` : ''}
           </div>
           <div class="segment-baggage-tag"><i class="fa-solid fa-suitcase-rolling"></i> ${fullBaggageStr}</div>
         </div>
         <div class="segment-route-grid">
           <div>
             <div class="node-title">${leg.fromCity}</div>
-            <div class="node-sub">${leg.fromTerm || ''}</div>
+            <div class="node-sub ${fromTermClean ? 'term-highlight' : ''}">${fromTermClean}</div>
           </div>
           <div class="route-center">
             <div class="flight-dur">${leg.duration || 'Bay thẳng'}</div>
@@ -1115,13 +1122,13 @@
           </div>
           <div style="text-align: right;">
             <div class="node-title">${leg.toCity}</div>
-            <div class="node-sub">${leg.toTerm || ''}</div>
+            <div class="node-sub ${toTermClean ? 'term-highlight' : ''}">${toTermClean}</div>
           </div>
         </div>
         <div class="flight-bottom-bar">
           <div><i class="fa-regular fa-calendar-check"></i> <strong>${leg.date}</strong></div>
           <div style="text-align: center;"><i class="fa-regular fa-clock"></i> Giờ bay: <strong>${leg.time}</strong></div>
-          <div style="text-align: right;"><i class="fa-solid fa-plane-up"></i> <strong>${leg.flightNo}</strong> (${leg.aircraft || 'Máy bay tiêu chuẩn'})</div>
+          <div style="text-align: right;"><i class="fa-solid fa-plane-up"></i> <strong>${leg.flightNo}</strong> (${leg.aircraft || 'Tiêu chuẩn'})</div>
         </div>
       `;
       container.appendChild(card);
@@ -1134,9 +1141,8 @@
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          const maxDim = 1280;
-          let w = img.width;
-          let h = img.height;
+          const maxDim = 2048;
+          let w = img.width, h = img.height;
           if (w > maxDim || h > maxDim) {
             if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
             else { w = Math.round((w * maxDim) / h); h = maxDim; }
@@ -1146,10 +1152,9 @@
           canvas.height = h;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, w, h);
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
           resolve({
             mimeType: 'image/jpeg',
-            base64Data: dataUrl.split(',')[1]
+            base64Data: canvas.toDataURL('image/jpeg', 0.95).split(',')[1]
           });
         };
         img.src = e.target.result;
@@ -1158,36 +1163,53 @@
     });
   }
 
-  const PROMPT_INSTRUCTION = `Trích xuất thông tin vé máy bay này thành JSON duy nhất theo mẫu sau:
+  const PROMPT_INSTRUCTION = `Bạn là chuyên gia bóc tách hành trình vé máy bay chính xác 100%. Hãy đọc từng dòng chữ trong ảnh chụp và trả về DUY NHẤT một chuỗi JSON chuẩn theo cấu trúc sau (không bọc trong \`\`\`json):
 {
-  "airline": "Tên hãng chính hoặc hãng xuất vé (ví dụ: Vietnam Airlines, VietJet Air...)",
-  "airlineCode": "Mã IATA 2 ký tự (ví dụ: VN, VJ, QH...)",
-  "tripType": "oneway hoặc transit hoặc roundtrip",
-  "tripDesc": "Mô tả ngắn gọn (ví dụ: Khứ hồi Sydney - Hồ Chí Minh)",
+  "airline": "Tên hãng xuất vé chính (VD: Vietnam Airlines)",
+  "airlineCode": "Mã IATA của hãng chính (VD: VN)",
+  "tripType": "roundtrip hoặc oneway hoặc transit",
+  "tripDesc": "Lộ trình tóm tắt (VD: Khứ hồi Sydney - Hải Phòng)",
+  "carryOn": "Hành lý xách tay đọc từ ảnh (VD: 10kg xách tay)",
+  "checked": "Hành lý ký gửi đọc từ ảnh (VD: 23kg ký gửi)",
   "adultCount": 1,
   "adultFare": 0,
   "adultTax": 0,
   "legs": [
     {
-      "badge": "CHIỀU ĐI hoặc CHIỀU VỀ hoặc CHẶNG 1...",
-      "airlineName": "Tên đầy đủ hãng thực hiện chuyến này (ví dụ: Vietnam Airlines, Qantas, VietJet Air...)",
-      "airlineCode": "Mã IATA",
-      "fromCity": "Điểm đi kèm mã sân bay (ví dụ: Sydney (SYD))",
-      "fromTerm": "Ga đi (ví dụ: T1)",
-      "toCity": "Điểm đến kèm mã sân bay (ví dụ: Hồ Chí Minh (SGN))",
-      "toTerm": "Ga đến (ví dụ: T2)",
-      "date": "Ngày bay (ví dụ: T.Sáu 18/12)",
-      "time": "Giờ bay (ví dụ: 11:50 - 16:20)",
-      "flightNo": "Mã chuyến (ví dụ: VN772 hoặc VJ935)",
-      "aircraft": "Loại máy bay",
-      "duration": "Thời gian bay"
+      "badge": "CHIỀU ĐI hoặc CHIỀU VỀ",
+      "airlineName": "Tên đầy đủ hãng thực tế khai thác (VD: Vietnam Airlines, Pacific Airlines)",
+      "airlineCode": "Mã IATA tương ứng hãng bay (VD: VN, BL)",
+      "fromCity": "Tên thành phố kèm mã sân bay (VD: Sydney (SYD))",
+      "fromTerm": "T1 hoặc T2 hoặc T3 (Rút gọn từ chữ Nhà ga X dưới tên sân bay)",
+      "toCity": "Tên thành phố đến kèm mã sân bay (VD: Hồ Chí Minh (SGN))",
+      "toTerm": "T1 hoặc T2 hoặc T3 (Rút gọn từ chữ Nhà ga X dưới tên sân bay)",
+      "date": "Ngày bay chi tiết (VD: Thứ Hai, 05/04/2027)",
+      "time": "Giờ bay (VD: 10:15 - 16:15)",
+      "flightNo": "Mã chuyến bay (VD: VN772)",
+      "aircraft": "Loại tàu bay (VD: AIRBUS A350-900)",
+      "duration": "Thời gian bay của chặng"
     }
   ]
 }
-Lưu ý quan trọng:
-- Nếu các chặng bay do các hãng hàng không khác nhau khai thác, hãy điền chính xác airlineName và airlineCode tương ứng của chặng đó.
-- Nếu có nối chuyến thêm phần tử: {"isTransitBar": true, "transitText": "Nối chuyến... tại..."}.
-- adultFare, adultTax là số nguyên. Chỉ trả về JSON thuần túy, không dùng markdown block.`;
+
+QUY TẮC BẮT BUỘC ĐỂ TRÁNH NHẦM LẪN NHÀ GA:
+1. ĐỌC CHÍNH XÁC TỪNG NHÀ GA (T1, T2, T3):
+   - Đọc trực tiếp dòng chữ đỏ hoặc đen ghi "Nhà ga 1", "Nhà ga 2", "Nhà ga 3" ngay dưới mỗi địa điểm sân bay:
+     * Dưới "Sydney" có chữ "Nhà ga 1" -> T1.
+     * Dưới "16:15 TP. Hồ Chí Minh" có chữ đỏ "Nhà ga 2" -> toTerm là "T2".
+     * Dưới "20:35 TP. Hồ Chí Minh" có chữ đỏ "Nhà ga 3" -> fromTerm PHẢI LÀ "T3" (TUYỆT ĐỐI KHÔNG ĐƯỢC GHI T1).
+     * Dưới "18:15 TP. Hồ Chí Minh" có chữ đỏ "Nhà ga 3" -> toTerm PHẢI LÀ "T3" (TUYỆT ĐỐI KHÔNG ĐƯỢC GHI T1).
+     * Dưới "20:45 TP. Hồ Chí Minh" có chữ đỏ "Nhà ga 2" -> fromTerm là "T2".
+     * Sân bay Hải Phòng (Cát Bi) không ghi nhà ga -> Để chuỗi rỗng "".
+2. HÃNG KHAI THÁC:
+   - Nếu có dòng "Khai thác bởi Pacific Airlines" thì chuyến đó airlineName là "Pacific Airlines" và airlineCode là "BL".
+3. ĐIỂM DỪNG NỐI CHUYẾN:
+   - Mỗi khi xuất hiện khối "1 điểm dừng ... Thay đổi nhà ga", bắt buộc tạo một phần tử riêng trong mảng legs:
+     {"isTransitBar": true, "transitText": "Nối chuyến [thời gian chờ] tại [tên sân bay] - Thay đổi nhà ga"}
+4. HÀNH LÝ:
+   - "Hành lý ký gửi: 1 x 23 kg" -> checked = "23kg ký gửi".
+   - "Hành lý xách tay: 1 x 10 kg" -> carryOn = "10kg xách tay".
+5. Nếu ảnh không có bảng giá tiền, giữ adultFare: 0 và adultTax: 0. Chỉ trả về JSON thuần.`;
 
   async function callGeminiSmart(apiKey, base64Data, mimeType) {
     const modelName = "gemini-3.8-flash";
@@ -1209,13 +1231,12 @@ Lưu ý quan trọng:
             }],
             generationConfig: {
               responseMimeType: "application/json",
-              temperature: 0.1
+              temperature: 0.0
             }
           })
         });
 
         const data = await res.json();
-
         if ((res.status === 503 || res.status === 429) && attempt < maxRetries) {
           const statusElem = document.getElementById('pasteStatusText');
           statusElem.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color: #f59e0b;"></i> Máy chủ Google bận, đang kết nối lại (Lần ${attempt}/${maxRetries})...`;
@@ -1250,7 +1271,7 @@ Lưu ý quan trọng:
     const loadingBox = document.getElementById('aiLoadingBox');
     const pasteStatus = document.getElementById('pasteStatusText');
     loadingBox.style.display = 'block';
-    pasteStatus.innerHTML = `<i class="fa-solid fa-bolt fa-bounce" style="color: #f59e0b;"></i> Đang phân tích siêu tốc vé máy bay...`;
+    pasteStatus.innerHTML = `<i class="fa-solid fa-bolt fa-bounce" style="color: #f59e0b;"></i> Đang đọc siêu nét từng chi tiết nhà ga và đồng bộ vé...`;
 
     try {
       const { mimeType, base64Data } = await compressImageFast(file);
@@ -1264,14 +1285,16 @@ Lưu ý quan trọng:
       ticketData.tripType = result.tripType || "roundtrip";
       ticketData.tripDesc = result.tripDesc || "Hành Trình";
       ticketData.legs = result.legs || [];
+      if (result.carryOn) ticketData.carryOn = result.carryOn;
+      if (result.checked) ticketData.checked = result.checked;
 
       document.getElementById('airlineBadgeText').value = ticketData.airlineCode;
       if (result.adultCount !== undefined) document.getElementById('adultCount').value = result.adultCount || 1;
-      if (result.adultFare !== undefined) {
+      if (result.adultFare !== undefined && result.adultFare > 0) {
         document.getElementById('adultFare').value = result.adultFare;
         document.getElementById('childFare').value = Math.round(result.adultFare * 0.7);
       }
-      if (result.adultTax !== undefined) {
+      if (result.adultTax !== undefined && result.adultTax > 0) {
         document.getElementById('adultTax').value = result.adultTax;
         document.getElementById('childTax').value = result.adultTax;
       }
@@ -1280,7 +1303,6 @@ Lưu ý quan trọng:
       pasteStatus.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #16a34a;"></i> AI ĐÃ XONG VÀ ĐỒNG BỘ THÀNH CÔNG!`;
       loadingBox.style.display = 'none';
       renderQuote();
-
     } catch (err) {
       console.error("Lỗi AI:", err);
       loadingBox.style.display = 'none';
@@ -1295,7 +1317,6 @@ Lưu ý quan trọng:
     const oldText = btn.innerHTML;
 
     btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang sao chép ảnh...`;
-
     try {
       const canvas = await html2canvas(card, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
       canvas.toBlob(async (blob) => {
@@ -1348,23 +1369,17 @@ Lưu ý quan trọng:
     }
 
     let legsText = '';
-    ticketData.legs.forEach((leg, idx) => {
+    (ticketData.legs || []).forEach((leg, idx) => {
       if (leg.isTransitBar) {
         legsText += `\n⏳ ${leg.transitText}\n`;
         return;
       }
       const legAirline = leg.airlineName || ticketData.airline;
-      legsText += `
-📍 [${leg.badge || `CHẶNG ${idx + 1}`}] - ${legAirline}
-- Tuyến bay: ${leg.fromCity} ➔ ${leg.toCity}
-- Ngày bay: ${leg.date} | Giờ khởi hành: ${leg.time}
-- Chuyến bay: ${leg.flightNo} (${leg.aircraft || 'Tiêu chuẩn'}) - ${leg.duration || 'Bay thẳng'}`;
+      legsText += `\n📍 [${leg.badge || `CHẶNG ${idx + 1}`}] - ${legAirline}\nTuyến bay: ${leg.fromCity} ➔ ${leg.toCity}\nNgày bay: ${leg.date} | Giờ khởi hành: ${leg.time}\nChuyến bay: ${leg.flightNo} (${leg.aircraft || 'Tiêu chuẩn'}) - ${leg.duration || 'Bay thẳng'}\n`;
     });
 
     const text = `✈️ BÁO GIÁ VÉ MÁY BAY CHUYÊN NGHIỆP - ĐẶC QUYỀN TRỢ GIÁ ${discountPercent}%
-${ticketData.tripDesc ? `(${ticketData.tripDesc})` : ''}
-${legsText}
-
+${ticketData.tripDesc ? `(${ticketData.tripDesc})\n` : ''}${legsText}
 👑 ĐẶC QUYỀN HÀNH TRÌNH & DỊCH VỤ:
 - Hành lý chặng bay: ${carryOn} + ${checked}
 - Chính sách đổi vé: ${changeTicketStr}
@@ -1375,14 +1390,14 @@ ${legsText}
 👥 CHI TIẾT ĐƠN GIÁ HÀNH KHÁCH:
 ${paxText}
 ----------------------------------------
-- Tổng giá trị gốc ban đầu: ${document.getElementById('viewSumInitial').innerText}
-- Đặc quyền trợ giá (-${discountPercent}%): ${document.getElementById('viewDiscountAmount').innerText}
+Tổng giá trị gốc ban đầu: ${document.getElementById('viewSumInitial').innerText}
+Đặc quyền trợ giá (-${discountPercent}%): ${document.getElementById('viewDiscountAmount').innerText}
 👉 TỔNG THANH TOÁN TRỌN GÓI: ${document.getElementById('viewFinalTotal').innerText}
 
 Anh/Chị chốt sớm để giữ mức giá ưu đãi và hành trình đẹp nhất nhé!`;
 
     navigator.clipboard.writeText(text).then(() => {
-      alert('Đã sao chép tin nhắn Zalo văn phong sang trọng!');
+      alert('Đã sao chép tin nhắn Zalo!');
     }).catch(() => {
       alert('Lỗi quyền truy cập clipboard!');
     });
